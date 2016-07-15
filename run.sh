@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # get the latest software
-git clone https://github.com/qpdf/qpdf.git
+git clone https://github.com/qpdf/qpdf.git qpdf
 git clone https://github.com/apple/cups.git cups-2.2
-git clone git://git.freedesktop.org/git/poppler/poppler
-git clone http://git.ghostscript.com/ghostpdl.git
-bzr branch http://bzr.linuxfoundation.org/openprinting/cups-filters
-bzr branch http://bzr.openprinting.org/foomatic/foomatic-db
-wget http://downloads.sourceforge.net/project/gimp-print/gutenprint-5.2/5.2.11/gutenprint-5.2.11.tar.bz2
+git clone git://git.freedesktop.org/git/poppler/poppler poppler
+git clone git://git.ghostscript.com/ghostpdl.git ghostpdl
+bzr branch http://bzr.linuxfoundation.org/openprinting/cups-filters cups-filters
+bzr branch http://bzr.openprinting.org/foomatic/foomatic-db foomatic-db
+wget http://downloads.sourceforge.net/project/gimp-print/gutenprint-5.2/5.2.11/gutenprint-5.2.11.tar.bz2 -O gutenprint
 
 # start building
 
@@ -17,6 +17,7 @@ autoconf
 ./configure --enable-doc-maintenance
 make
 sudo make install
+cd ..
 
 # poppler
 cd poppler
@@ -24,6 +25,7 @@ cd poppler
 ./configure --enable-libcurl
 make
 sudo make install
+cd ..
 
 # cups
 
@@ -36,6 +38,7 @@ cd cups-2.2
 make
 sudo make install
 echo "ServerName /var/run/cups/cups.sock" > /etc/cups/client.conf
+cd ..
 
 # ghostscript
 
@@ -46,6 +49,7 @@ sudo apt-get install libxt-dev
 make
 sudo make install
 sudo make install-so
+cd ..
 
 # cups-filters
 
@@ -54,6 +58,7 @@ autoconf
 ./configure
 make
 sudo make install
+cd ..
 
 # foomatic-db
 
@@ -61,15 +66,17 @@ cd foomatic-db
 ./configure
 make
 sudo make install
-
+cd ..
 
 # gutenprint
 
-cd gutenprint-5.2.11
+tar xvjf gutenprint-5.2.11.tar.bz2
+cd gutenprint
 sudo apt-get install texlive-fonts-extra doxygen
 ./configure
 make
 sudo make install
+cd ..
 
 # finished!
 echo "finished!!!"
